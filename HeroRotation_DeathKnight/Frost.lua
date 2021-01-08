@@ -231,11 +231,11 @@ end
 
 local function BosPooling()
   -- "Howling Blast", "if=buff.rime.up"
-  if S.HowlingBlast:IsCastable() and (Player:BuffUp(S.RimeBuff)) then
+  if S.HowlingBlast:IsCastable() and (Player:BuffUp(S.RimeBuff)) and (Player:RunicPowerDeficit() > 40) then
     if HR.Cast(S.HowlingBlast) then return "howling_blast bos 1"; end
   end
   -- "Remorseless Winter", "if=active_enemies>=2|rune.time_to_5<=gcd&(talent.gathering_storm|conduit.everfrost|runeforge.biting_cold)"
-  if S.RemorselessWinter:IsCastable() and (EnemiesCount10yd >= 2 or Player:RuneTimeToX(5) <= Player:GCD() and (S.GatheringStorm:IsAvailable() or S.Everfrost:ConduitEnabled() or BitingColdEquipped)) then
+  if S.RemorselessWinter:IsCastable() and (EnemiesCount10yd >= 2 or Player:RuneTimeToX(5) <= Player:GCD() and (S.GatheringStorm:IsAvailable() or S.Everfrost:ConduitEnabled() or BitingColdEquipped)) and (Player:RunicPowerDeficit() > 60) then
     if HR.Cast(S.RemorselessWinter, nil, nil, not TargetIsInRange[8]) then return "remorseless_winter bos 2"; end
   end
   -- "Obliterate", "target_if=max:(debuff.razorice.stack+1)%(debuff.razorice.remains+1)*death_knight.runeforge.razorice,if=runic_power.deficit>=25"
