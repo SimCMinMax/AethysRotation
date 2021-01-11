@@ -304,26 +304,26 @@ local function SpendChi(force_spend, chi_costs, chi_values)
 
   -- Use the best free spell that's ready and a combo strike.
   -- TODO: decide where to actually prioritize free casts of chi spenders. First experiment is with then below FOF priority.
-  local best_free_spell = nil
-  local best_free_spell_value = 0
-  for spell, cost in pairs(chi_costs) do
-    if cost == 0 then
-      local value = chi_values[spell]
-      if value > best_free_spell_value and spell:IsReady() and ComboStrike(spell) then
-        best_free_spell = spell
-        best_free_spell_value = value
-      end
-    end
-  end
-  if best_free_spell ~= nil then
-    return OptimallyTargetedCast(best_free_spell, "Free cast of " .. best_free_spell.SpellName)
-  end
+  -- local best_free_spell = nil
+  -- local best_free_spell_value = 0
+  -- for spell, cost in pairs(chi_costs) do
+  --   if cost == 0 then
+  --     local value = chi_values[spell]
+  --     if value > best_free_spell_value and spell:IsReady() and ComboStrike(spell) then
+  --       best_free_spell = spell
+  --       best_free_spell_value = value
+  --     end
+  --   end
+  -- end
+  -- if best_free_spell ~= nil then
+  --   return OptimallyTargetedCast(best_free_spell, "Free cast of " .. best_free_spell.SpellName)
+  -- end
 
   -- Use the situationally best chi spender if it's ready!
-  local rsk_efficiency = chi_values[S.RisingSunKick] / (chi_costs[S.RisingSunKick] + 0.0001)
-  local rjw_efficiency = chi_values[S.RushingJadeWind] / (chi_costs[S.RushingJadeWind] + 0.0001)
-  local bok_efficiency = chi_values[S.BlackoutKick] / (chi_costs[S.BlackoutKick] + 0.0001)
-  local sck_efficiency = chi_values[S.SpinningCraneKick] / (chi_costs[S.SpinningCraneKick] + 0.0001)
+  local rsk_efficiency = chi_values[S.RisingSunKick] / (chi_costs[S.RisingSunKick] + 2)
+  local rjw_efficiency = chi_values[S.RushingJadeWind] / (chi_costs[S.RushingJadeWind] + 2)
+  local bok_efficiency = chi_values[S.BlackoutKick] / (chi_costs[S.BlackoutKick] + 2)
+  local sck_efficiency = chi_values[S.SpinningCraneKick] / (chi_costs[S.SpinningCraneKick] + 2)
   if rsk_efficiency > max(rjw_efficiency, bok_efficiency, sck_efficiency) then
     if S.RisingSunKick:IsReady() and ComboStrike(S.RisingSunKick) then
       return OptimallyTargetedCast(S.RisingSunKick, "RSK is best possible chi spender and it's ready.")
