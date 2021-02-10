@@ -175,11 +175,14 @@ Spell.Shaman.Elemental = {
   MasterOfTheElements                   = Spell(16166),
   MasterOfTheElementsBuff               = Spell(260734),
   StormElemental                        = Spell(192249),
+  StormElementalPetBuff                 = Spell(157348),
   WindGustBuff                          = Spell(263806),
   LiquidMagmaTotem                      = Spell(192222),
 
   SurgeOfPower                          = Spell(262303),
   PrimalElementalist                    = Spell(117013),
+  PEMeteor                              = Spell(117588),
+  PEEyeOfTheStorm                       = Spell(157375),
   Icefury                               = Spell(210714),
   IcefuryBuff                           = Spell(210714),
 

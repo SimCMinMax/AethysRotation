@@ -31,6 +31,7 @@ HR.GUISettings.APL.Shaman = {
     -- {Display OffGCD as OffGCD, ForceReturn}
     OffGCDasOffGCD = {
       -- Racials
+      Racials = true,
       -- Abilities
       WindShear = true
     }
@@ -51,16 +52,24 @@ HR.GUISettings.APL.Shaman = {
     },
   },
     Elemental = {
+      Commons = {
+        ShowSpeiclaElementalAblities = true,
+      },
     -- {Display GCD as OffGCD, ForceReturn}
     GCDasOffGCD = {
       -- Abilities
       Ascendance = true,
-      FireElemental = true
+      FireElemental = true,
+      StormElemental = true,
+      Stormkeeper =  true,
+      EchoingShock = true,
     },
     -- {Display OffGCD as OffGCD, ForceReturn}
     OffGCDasOffGCD = {
       -- Racials
       -- Abilities
+      PEMeteor = true,
+      PEEyeOfTheStorm = true,
     }
   }
 }
@@ -86,3 +95,4 @@ CreatePanelOption("Dropdown", CP_Shaman, "APL.Shaman.Commons.CovenantDisplayStyl
 CreateARPanelOptions(CP_Enhancement, "APL.Shaman.Enhancement");
 -- Elemental
 CreateARPanelOptions(CP_Elemental, "APL.Shaman.Elemental");
+CreatePanelOption("CheckButton", CP_Elemental, "APL.Shaman.Elemental.Commons.ShowSpeiclaElementalAblities", "Show Special Elemental abilities", "Enable this if you want the addon to show you when to use special elemental abilities when selected the Primal Elementalists talent");
