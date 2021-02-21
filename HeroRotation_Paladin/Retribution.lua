@@ -122,7 +122,7 @@ local function Cooldowns()
   end
   -- actions.cooldowns+=/crusade,if=(holy_power>=4&time<5|holy_power>=3&time>5|talent.holy_avenger.enabled&cooldown.holy_avenger.remains=0)&time_to_hpg=0
   if CDsON() and S.Crusade:IsCastable() and (((Player:HolyPower() >= 4 and HL.CombatTime() < 5) or (Player:HolyPower() >= 3 and HL.CombatTime() >= 5) or (S.HolyAvenger:IsAvailable() and S.HolyAvenger:CooldownRemains() == 0)) and TimeToHPG <= Player:GCDRemains()) then
-    if Cast(S.Crusade, Settings.Retribution.OffGCDasOffGCD.AvengingWrath) then return "Cast Crusade" end
+    if Cast(S.Crusade, Settings.Retribution.OffGCDasOffGCD.AvengingWrath) then return "Cast Crusade 1" end
   end
   -- actions.cooldowns+=/ashen_hallow
   if CDsON() and S.AshenHallow:IsCastable() then
@@ -139,6 +139,7 @@ local function Cooldowns()
 end
 
 local function Finishers()
+  print("finisher")
   -- actions.finishers=variable,name=ds_castable,value=spell_targets.divine_storm>=2|buff.empyrean_power.up&debuff.judgment.down&buff.divine_purpose.down|spell_targets.divine_storm>=2&buff.crusade.up&buff.crusade.stack<10
   -- Note: The last part with "spell_targets.divine_storm>=2&..." is redundant with the first condition.
   local DSCastable = MeleeEnemies8yCount >= 2 or (Player:BuffUp(S.EmpyreanPower) and Target:DebuffDown(S.Judgment) and Player:BuffDown(S.DivinePurpose))
@@ -170,7 +171,7 @@ local function Finishers()
   --   |spell_targets.divine_storm>=2&(talent.holy_avenger.enabled&cooldown.holy_avenger.remains<gcd*3|buff.crusade.up&buff.crusade.stack<10))
   if S.DivineStorm:IsReady() and Target:IsInMeleeRange(5) and DSCastable and not Player:BuffUp(S.VanquishersHammer)
     and (((not S.Crusade:IsAvailable() or not CDsON() or S.Crusade:CooldownRemains() > Player:GCD() * 3)
-        and (not S.ExecutionSentence:IsAvailable() or not CDsON() or S.ExecutionSentence:CooldownRemains() > Player:GCD() * 3 or MeleeEnemies8yCount >= 3))
+        and (not S.ExecutionSentence:IsAvailable() or not CDsON() or S.ExecutionSentence:CooldownRemains() > Player:GCD() * 3 or MeleeEnemies8yCount >= 3 or Settings.Retribution.Playstyle.DontForceCDs))
       or (MeleeEnemies8yCount >= 2 and ((S.HolyAvenger:IsAvailable() and CDsON() and S.HolyAvenger:CooldownRemains() < Player:GCD() * 3) or (Player:BuffUp(S.Crusade) and Player:BuffStack(S.Crusade) < 10)))) then
     if Cast(S.DivineStorm) then return "Cast Divine Storm" end
   end
@@ -180,7 +181,7 @@ local function Finishers()
   --   &(!covenant.necrolord.enabled|cooldown.vanquishers_hammer.remains>gcd)
   -- |talent.holy_avenger.enabled&cooldown.holy_avenger.remains<gcd*3|buff.holy_avenger.up
   -- |buff.crusade.up&buff.crusade.stack<10|buff.vanquishers_hammer.up
-  if S.TemplarsVerdict:IsReady() and Target:IsInMeleeRange(5) and ((not S.Crusade:IsAvailable() or S.Crusade:CooldownRemains() > Player:GCD() * 3)
+  if S.TemplarsVerdict:IsReady() and Target:IsInMeleeRange(5) and ((not S.Crusade:IsAvailable() or S.Crusade:CooldownRemains() > Player:GCD() * 3 or Settings.Retribution.Playstyle.DontForceCDs)
       and (not S.ExecutionSentence:IsAvailable() or CDsON() or (S.ExecutionSentence:CooldownRemains() > Player:GCD() * 3 and MeleeEnemies8yCount <= 3))
       and (not S.FinalReckoning:IsAvailable() or CDsON() or S.FinalReckoning:CooldownRemains() > Player:GCD() * 3)
       and (not S.VanquishersHammer:IsAvailable() or CDsON() or S.VanquishersHammer:CooldownRemains() > Player:GCD())
@@ -193,6 +194,7 @@ end
 local function Generators()
   -- actions.generators=call_action_list,name=finishers,if=holy_power>=5|buff.holy_avenger.up|debuff.final_reckoning.up|debuff.execution_sentence.up|buff.memory_of_lucid_dreams.up|buff.seething_rage.up
   if Player:HolyPower() >= 5 or Player:BuffUp(S.HolyAvenger) or Target:DebuffUp(S.FinalReckoning) or Target:DebuffUp(S.ExecutionSentence) then
+    print("test1")
     ShouldReturn = Finishers()
     if ShouldReturn then return ShouldReturn; end
   end
@@ -230,6 +232,7 @@ local function Generators()
   end
   -- actions.generators+=/call_action_list,name=finishers,if=(target.health.pct<=20|buff.avenging_wrath.up|buff.crusade.up|buff.empyrean_power.up)
   if Target:HealthPercentage() <= 20 or Player:BuffUp(S.AvengingWrath) or Player:BuffUp(S.Crusade) or Player:BuffUp(S.EmpyreanPower) then
+    print("test2")
     ShouldReturn = Finishers()
     if ShouldReturn then return ShouldReturn; end
   end
@@ -238,8 +241,9 @@ local function Generators()
     if Cast(S.CrusaderStrike) then return "Cast Crusader Strike" end
   end
   -- actions.generators+=/call_action_list,name=finishers
-  ShouldReturn = Finishers()
-  if ShouldReturn then return ShouldReturn; end
+  --ShouldReturn = Finishers()
+  --print("test3")
+  --if ShouldReturn then return ShouldReturn; end
   -- actions.generators+=/crusader_strike,if=holy_power<=4
   if S.CrusaderStrike:IsCastable() and Target:IsInMeleeRange(5) and Player:HolyPower() <= 4 then
     if Cast(S.CrusaderStrike) then return "Cast Crusader Strike 2" end

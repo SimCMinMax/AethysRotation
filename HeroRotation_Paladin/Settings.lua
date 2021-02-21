@@ -45,6 +45,9 @@ HR.GUISettings.APL.Paladin = {
     }
   },
   Retribution = {
+    Playstyle = {
+      DontForceCDs = false
+    },
     OffGCDasOffGCD = {
       AvengingWrath = true,
     },
@@ -74,3 +77,4 @@ CreateARPanelOptions(CP_Protection, "APL.Paladin.Protection")
 
 -- Retribution
 CreateARPanelOptions(CP_Retribution, "APL.Paladin.Retribution")
+CreatePanelOption("CheckButton", CP_Retribution, "APL.Paladin.Retribution.Playstyle.DontForceCDs", "Dont force using CDs", "Enable this if you want the addon to show to dont force use Avenging Wrath or Crusade.")
